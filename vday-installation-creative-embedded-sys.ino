@@ -22,7 +22,7 @@
 #include <TFT_eSPI.h> // Graphics and font library
 #include <SPI.h>
 
-#include <stdlib.h>
+#include <stdlib.h> //for rand
 
 TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
 
@@ -41,12 +41,10 @@ unsigned int colour = red << 11;
 int tcount = 0;
 
 
-int lyricplace[] = {45,13,69,93,117,29,77,5,61};
+int firstlyricplace[] = {45,13,69,93,117,29,77,5,61};
 //int lyricplace[] = {5,13,29,45,61,69,77,93,117};
 
-
-
-const char *lyrics[] = {
+const char *firstlyrics[] = {
   "It's you, it's you, it's all for you\n  everything I do ",//45
   "If you hold me without hurting me,\n  you'd be the first that ever did",//13
   "You're beautiful and I'm insane",//69
@@ -63,9 +61,9 @@ const char *lyrics[] = {
 
 void drawPinkHeart(int x, int y,int s,int xi, int yi){
   heart.fillSprite(TFT_TRANSPARENT);
-  heart.fillCircle(80 +x, 60+y, 30, TFT_PINK);
-  heart.fillCircle(120+x, 60+y, 30, TFT_PINK);
-  heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, TFT_PINK);   
+  heart.fillCircle(80 +x, 60+y, 30, 0xFAF7);
+  heart.fillCircle(120+x, 60+y, 30, 0xFAF7);
+  heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, 0xFAF7);   
   heart.pushToSprite(&img,xi,yi,TFT_TRANSPARENT);
 }
 
@@ -126,7 +124,7 @@ void loop() {
   tcount--;
 
   
-  if (tcount > 500){
+  if (tcount > 300){
     if (targetTime < millis()) {
       targetTime = millis() + 100;//10000;
 
@@ -180,42 +178,30 @@ void loop() {
         colour = red << 11 | green << 5 | blue;
       }
 
-      // The standard ADAFruit font still works as before
      // img.setTextColor(TFT_BLACK);
       
       img.setTextColor(TFT_WHITE); // Do not plot the background colour //maybe make black
 
-      for(size_t i = 0; i < (1000-tcount)/20 && i < sizeof(lyrics) / sizeof(int); i++)
+      for(size_t i = 0; i < (1000-tcount)/20 && i < sizeof(firstlyrics) / sizeof(int); i++)
       {
-        img.setCursor(8,lyricplace[i]);
-        img.print(lyrics[i]);
+        img.setCursor(8,firstlyricplace[i]);
+        img.print(firstlyrics[i]);
       }
 
-      
-
       drawPinkHeart(0,0,0,rand()%80-50,rand()%100-50);
+      //maybe do a lot of tiny hearts instead
       img.pushSprite(0, 0);
-      
       
     }
 
     delay(100);
 
-
   } else {
 
 
-
-   // img.pushSprite(0,0);
-
-
-    
-
   //  stext2.pushSprite(0, 70);
-
-
   //  stext2.scroll(1);     // scroll stext 1 pixel right, up/down default is 0
-  //  img.fillSprite(TFT_BLACK);
+    
 
     if (tcount <= 0)
     { 
@@ -223,24 +209,17 @@ void loop() {
       tcount = 1000;
     }else{
       if (tcount <= 110){
-        drawRedHeart(0,0,0,110-tcount,0); // BOOM BOOM add settings to switch between two diff sizes
+        img.fillSprite(TFT_BLACK);
+        drawRedHeart(0,0,0,110-tcount,0); 
         img.pushSprite(0,0);
       } else {
-        tcount > 250 ? heartBeat(550-tcount) : heartBeat(300);
+        tcount > 150 ? heartBeat(350-tcount) : heartBeat(200); //slow down heart beat
       }
+
+      // add lyrics
+
+
     }
-//    else if (tcount % 100 == 0){
-      // If we have scrolled 100 pixels the redraw text
-   //   stext2.drawString("Hi from Chloe", 6, 0, 2); // draw at 6,0 in sprite, font 2
-//    }
-
-   // heart.scroll(1);
-
-
-    
-
-    
-    
 
 
 
