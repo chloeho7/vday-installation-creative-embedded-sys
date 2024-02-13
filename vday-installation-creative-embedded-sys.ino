@@ -32,13 +32,16 @@ TFT_eSprite stext2 = TFT_eSprite(&tft); // Sprite object stext2
 
 TFT_eSprite heart = TFT_eSprite(&tft); // Sprite object 
 
+TFT_eSprite tinyheart = TFT_eSprite(&tft);
+
+
 unsigned long targetTime = 0;
 byte red = 31;
 byte green = 0;
 byte blue = 0;
 byte state = 0;
 unsigned int colour = red << 11;
-int tcount = 0;
+int tcount = 1000;
 
 
 int firstlyricplace[] = {45,13,69,93,117,29,77,5,61};
@@ -58,12 +61,28 @@ const char *firstlyrics[] = {
   "I fall to pieces when I'm with you"//61
 };
 
+int seclyricplace[] = {5,21,37,45,61,69,77,93,117};
+
+const char *seclyrics[] = {
+"When's it gonna be my turn? Don't \n forget me",
+"Isn't strange that you're not here \n with me",
+"Don't ask if I'm happy, you know that\n I'm not. but, at best, I can say I'm not sad."
+
+
+//"What's the worst that can happen to a girl who's already hurt?"
+//"There's things I wanna say to you but I'll just let you live"
+//"Shared my body & my mind with you, that's all over now"
+//"Why wait for the best when I could have you?"
+
+};
+
 
 void drawPinkHeart(int x, int y,int s,int xi, int yi){
   heart.fillSprite(TFT_TRANSPARENT);
   heart.fillCircle(80 +x, 60+y, 30, 0xFAF7);
   heart.fillCircle(120+x, 60+y, 30, 0xFAF7);
-  heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, 0xFAF7);   
+  heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, 0xFAF7);  
+  //maybe put transparent hole in it 
   heart.pushToSprite(&img,xi,yi,TFT_TRANSPARENT);
 }
 
@@ -83,16 +102,39 @@ void drawRedHeart(int x, int y,int xi, int yi, bool big) {
 }
 
 void heartBeat(int pace){
-    img.fillSprite(TFT_BLACK);
+ //   img.fillSprite(TFT_BLACK);
     drawRedHeart(0,0,0,0,0);
     img.pushSprite(0,0);
     delay(pace);
-    img.fillSprite(TFT_BLACK);
+ //   img.fillSprite(TFT_BLACK);
     drawRedHeart(0,0,0,0,1);
     img.pushSprite(0,0);
     delay(pace);
 }
 
+void drawTinyHeart(int x, int y, int color){
+  tinyheart.setColorDepth(8);
+  tinyheart.createSprite(35, 30);
+
+  tinyheart.fillSprite(TFT_TRANSPARENT);
+
+
+  tinyheart.fillCircle(18, 10, 5, color);
+  tinyheart.fillCircle(27, 10, 5, color);
+  tinyheart.fillTriangle(15, 13, 23, 23, 30, 13, color);
+
+
+  // Push sprite to TFT screen CGRAM at coordinate x,y (top left corner)
+  // Specify what colour is to be treated as transparent.
+ // img.pushSprite(x, y, TFT_TRANSPARENT);
+  tinyheart.pushSprite(x,y,TFT_TRANSPARENT);
+  //tinyheart.pushToSprite(&img,x,y,TFT_TRANSPARENT);
+
+
+
+  // Delete it to free memory
+  //tinyheart.deleteSprite();
+}
 
 
 void setup(void) {
@@ -105,13 +147,7 @@ void setup(void) {
 
   targetTime = millis() + 1000;
 
- // Create a sprite for Hello World
-  stext2.setColorDepth(8);
-  stext2.createSprite(180, 16);
-  stext2.fillSprite(TFT_BLACK);
-  stext2.setScrollRect(0, 0, 180, 16, TFT_BLACK); // Scroll the "Hello" in the first 40 pixels
-  stext2.setTextColor(TFT_LIGHTGREY); // White text, no background
-
+ 
   heart.createSprite(240, 135);
 
 
@@ -123,8 +159,26 @@ void loop() {
 
   tcount--;
 
-  
-  if (tcount > 300){
+  //if tcount > 900 flood with hearts
+  if (tcount > 900){
+    tft.fillScreen(TFT_BLACK);
+
+    for (int i = 0; i < 500; i++)
+    {
+      int x = random(320-80);
+      int y = random(240-70);
+      int c = random(0x10000); // Random colour
+      drawTinyHeart(x, y, c);
+      yield(); // Stop watchdog reset
+    }
+
+    delay(50);
+
+
+
+
+
+  }else if (tcount > 300){
     if (targetTime < millis()) {
       targetTime = millis() + 100;//10000;
 
@@ -180,9 +234,10 @@ void loop() {
 
      // img.setTextColor(TFT_BLACK);
       
-      img.setTextColor(TFT_WHITE); // Do not plot the background colour //maybe make black
+    //  img.setTextColor(TFT_WHITE); // Do not plot the background colour //maybe make black
+      img.setTextColor(TFT_BLACK); //CHECK IF CAN DO BORDER
 
-      for(size_t i = 0; i < (1000-tcount)/20 && i < sizeof(firstlyrics) / sizeof(int); i++)
+      for(size_t i = 0; i < (1000-tcount)/20 && i < sizeof(firstlyricplace) / sizeof(int); i++)
       {
         img.setCursor(8,firstlyricplace[i]);
         img.print(firstlyrics[i]);
@@ -190,11 +245,17 @@ void loop() {
 
       drawPinkHeart(0,0,0,rand()%80-50,rand()%100-50);
       //maybe do a lot of tiny hearts instead
+
+
+    //  delay(2000);
+
       img.pushSprite(0, 0);
+
+    //  delay(2000);
       
     }
 
-    delay(100);
+    delay(50);
 
   } else {
 
@@ -206,17 +267,30 @@ void loop() {
     if (tcount <= 0)
     { 
       // sleep
+      tft.fillScreen(TFT_BLACK);
       tcount = 1000;
     }else{
+    //  tft.fillScreen(TFT_BLACK);
+      img.fillSprite(TFT_BLACK);
+      img.setTextColor(TFT_WHITE); // White text, no background
+
+
+      for(size_t i = 0; i < (300-tcount)/20 && i < sizeof(seclyricplace) / sizeof(int); i++)
+      {
+        img.setCursor(8,seclyricplace[i]);
+        img.print(seclyrics[i]);
+      }
+
       if (tcount <= 110){
-        img.fillSprite(TFT_BLACK);
         drawRedHeart(0,0,0,110-tcount,0); 
         img.pushSprite(0,0);
+        delay(50);
       } else {
         tcount > 150 ? heartBeat(350-tcount) : heartBeat(200); //slow down heart beat
       }
 
       // add lyrics
+
 
 
     }
