@@ -41,7 +41,7 @@ byte green = 0;
 byte blue = 0;
 byte state = 0;
 unsigned int colour = red << 11;
-int tcount = 300;//1000;
+int tcount = 1000;
 
 
 int firstlyricplace[] = {45,13,69,93,117,29,77,5,61};
@@ -91,32 +91,39 @@ void drawPinkHeart(int x, int y,int s,int xi, int yi){
   heart.fillCircle(80 +x, 60+y, 30, 0xFAF7);
   heart.fillCircle(120+x, 60+y, 30, 0xFAF7);
   heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, 0xFAF7);  
-  //maybe put transparent hole in it 
   heart.pushToSprite(&img,xi,yi,TFT_TRANSPARENT);
 }
 
 
-void drawRedHeart(int x, int y,int xi, int yi, bool big) {
+void drawRedHeart(int x, int y,int xi, int yi, bool big, bool broken, int thickness) {
   heart.fillSprite(TFT_TRANSPARENT);
   if (big){
-    heart.fillCircle(75-x, 60+y, 40, TFT_RED);
-    heart.fillCircle(125+x, 60+y, 40, TFT_RED);
-    heart.fillTriangle(40-x, 80+y, 100, 135+y, 160+x, 80+y, TFT_RED);
+    heart.fillCircle(75, 60, 40, TFT_RED);
+    heart.fillCircle(125, 60, 40, TFT_RED);
+    heart.fillTriangle(40, 80, 100, 135, 160, 80, TFT_RED);
   }else{
-    heart.fillCircle(80 +x, 60+y, 30, TFT_RED);
-    heart.fillCircle(120+x, 60+y, 30, TFT_RED);
+    heart.fillCircle(80 +x, 60, 30, TFT_RED);
+    heart.fillCircle(120+x, 60, 30, TFT_RED);
     heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, TFT_RED);    
+  }
+  if (broken){
+    for (int i = 0; i < thickness; ++i) {
+      int x = i;
+      heart.drawLine(x+107,y+30,x+85,y+60,TFT_TRANSPARENT);
+      heart.drawLine(x+105,y+85,x+85,y+60,TFT_TRANSPARENT);
+      heart.drawLine(x+105,y+85,x+95,y+120,TFT_TRANSPARENT);
+    }
   }
   heart.pushToSprite(&img,xi+10,yi-10,TFT_TRANSPARENT);
 }
 
 void heartBeat(int pace){
  //   img.fillSprite(TFT_BLACK);
-    drawRedHeart(0,0,0,0,0);
+    drawRedHeart(0,0,0,0,0,0,0);
     img.pushSprite(0,0);
     delay(pace);
  //   img.fillSprite(TFT_BLACK);
-    drawRedHeart(0,0,0,0,1);
+    drawRedHeart(0,0,0,0,1,0,0);
     img.pushSprite(0,0);
     delay(pace);
 }
@@ -277,12 +284,16 @@ void loop() {
       if (tcount <= 110){
 
         //maybe instead draw line thru heart and spereate
-        // for(size_t i = 0; i < 110-tcount; i++){
+   //      for(size_t i = 0; i < 110-tcount && i < 20; i++){
           //draw lines around 0,0
+     //     drawRedHeart(0,0,0,110-tcount,0,1,i);
 
        // }
-        drawRedHeart(0,0,0,110-tcount,0); // move heart down
+       // drawRedHeart(0,0,0,110-tcount,0,1,); // move heart down
+        tcount > 70 ? drawRedHeart(0,0,0,110-tcount,0,1,(110-tcount)/2) : drawRedHeart(0,0,0,110-tcount,0,1,110-90); 
         img.pushSprite(0,0);//try del
+
+        //dim screen
         ledcSetup(0, 5000, 8); // 0-15, 5000, 8
         ledcAttachPin(TFT_BL, 0); // TFT_BL, 0 - 15
         ledcWrite(0, tcount*2); // 0-15, 0-255 (with 8 bit resolution)
