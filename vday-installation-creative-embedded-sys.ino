@@ -61,10 +61,8 @@ const char *firstlyrics[] = {
   "I fall to pieces when I'm with you"//61
 };
 
-//int seclyricplace[] = {5,21,37,53,69,85,101,117};
-
 int seclyricplace[] = {37,101,85,5,117,21,69,53};
-
+//int seclyricplace[] = {5,21,37,53,69,85,101,117};
 
 const char *seclyrics[] = {
   "No one compares to you, I'm scared that you won't be waiting on the other side", //37
@@ -77,25 +75,16 @@ const char *seclyrics[] = {
   "What's the worst that can happen to\n a girl who's already hurt?" //53
 };
 
-int rainbow[] = {
-
-  
-  0xD000,
- 0xFA60, //orange?
- 0xFF09, //yellow
- 0x4CE0, //darker green
- 0x04E5,//other green
- 0x0400,//new
-  0x4EBD, // lgith blu
-  0x4D5D, //one or othdf
-  0x543F,// blye
-  0x6A9F, //..purplke
-  0x941F,
-  0x519F,
-  0xC2BF,
-  0xA27A,
+int rainbow[] = { 
+  0xDF02,//3
+  0x4010,//7
+  0x0010,//6
+  0xE800,//1
+  0x800F,//8
+  0xE360,//2
+  0x03F0,//5
+  0x0400,//4
 };
-
 
 void drawPinkHeart(int x, int y,int s,int xi, int yi){
   heart.fillSprite(TFT_TRANSPARENT);
@@ -110,9 +99,9 @@ void drawPinkHeart(int x, int y,int s,int xi, int yi){
 void drawRedHeart(int x, int y,int xi, int yi, bool big) {
   heart.fillSprite(TFT_TRANSPARENT);
   if (big){
-    heart.fillCircle(75 +x, 60+y, 40, TFT_RED);
+    heart.fillCircle(75-x, 60+y, 40, TFT_RED);
     heart.fillCircle(125+x, 60+y, 40, TFT_RED);
-    heart.fillTriangle(40+x, 80+y, 100+x, 135+y, 160+x, 80+y, TFT_RED);
+    heart.fillTriangle(40-x, 80+y, 100, 135+y, 160+x, 80+y, TFT_RED);
   }else{
     heart.fillCircle(80 +x, 60+y, 30, TFT_RED);
     heart.fillCircle(120+x, 60+y, 30, TFT_RED);
