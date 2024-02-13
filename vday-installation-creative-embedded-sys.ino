@@ -41,7 +41,7 @@ byte green = 0;
 byte blue = 0;
 byte state = 0;
 unsigned int colour = red << 11;
-int tcount = 1000;
+int tcount = 0;
 
 
 int firstlyricplace[] = {45,13,69,93,117,29,77,5,61};
@@ -61,17 +61,20 @@ const char *firstlyrics[] = {
   "I fall to pieces when I'm with you"//61
 };
 
-int seclyricplace[] = {5,21,37,53,69,85,101,117};
+//int seclyricplace[] = {5,21,37,53,69,85,101,117};
+
+int seclyricplace[] = {37,101,85,5,117,21,69,53};
+
 
 const char *seclyrics[] = {
-"When's it gonna be my turn? \n Don't forget me", //5
-"Isn't strange that you're not here\n with me", //27
-"No one compares to you, I'm scared that you won't be waiting on the other side", //37
-"What's the worst that can happen to\n a girl who's already hurt?", //53
-"Shared my body & my mind with you,\n that's all over now", //69
-"There's things I wanna say to you\n but I'll just let you live", //85
-"Why wait for the best when I\n could have you?", //101
-"It hurts to love you, but I still love  you  it's just the way I feel."
+  "No one compares to you, I'm scared that you won't be waiting on the other side", //37
+  "Why wait for the best when I\n could have you?", //101
+  "There's things I wanna say to you\n but I'll just let you live", //85
+  "When's it gonna be my turn? \n Don't forget me", //5
+  "It hurts to love you, but I still love  you  it's just the way I feel.",//117
+  "Isn't strange that you're not here\n with me", //21
+  "Shared my body & my mind with you,\n that's all over now", //69
+  "What's the worst that can happen to\n a girl who's already hurt?" //53
 };
 
 
@@ -156,7 +159,7 @@ void loop() {
       int c = random(0x10000); // Random colour
       drawTinyHeart(x, y, c);
       yield(); // Stop watchdog reset
-      delay(1);
+      delay(2);
     }
 
   } else if (tcount > 300){
@@ -215,7 +218,7 @@ void loop() {
 
       img.setTextColor(TFT_BLACK); //CHECK IF CAN DO BORDER
 
-      for(size_t i = 0; i < (900-tcount)/20 && i < sizeof(firstlyricplace) / sizeof(int); i++) 
+      for(size_t i = 0; i < (900-tcount)/20 && i < sizeof(firstlyricplace) / sizeof(int); i++) // slowly print lyrics
       {
         img.setCursor(8,firstlyricplace[i]);
         img.print(firstlyrics[i]);
@@ -238,6 +241,15 @@ void loop() {
       // sleep
       tft.fillScreen(TFT_BLACK);
       tcount = 1000;
+      //100000
+     // esp_sleep_enable_timer_wakeup(100000);
+     // esp_deep_sleep_start();
+      esp_deep_sleep(100000000);
+      ledcSetup(0, 5000, 8); // 0-15, 5000, 8
+      ledcAttachPin(TFT_BL, 0); // TFT_BL, 0 - 15
+      ledcWrite(0, 255); // 0-15, 0-255 (with 8 bit resolution)
+
+
     }else{
 
       img.fillSprite(TFT_BLACK);
@@ -260,6 +272,10 @@ void loop() {
        // }
         drawRedHeart(0,0,0,110-tcount,0); // move heart down
         img.pushSprite(0,0);//try del
+        ledcSetup(0, 5000, 8); // 0-15, 5000, 8
+        ledcAttachPin(TFT_BL, 0); // TFT_BL, 0 - 15
+        ledcWrite(0, tcount*2); // 0-15, 0-255 (with 8 bit resolution)
+
         delay(50);
       } else {
         tcount > 150 ? heartBeat(350-tcount) : heartBeat(200); //slow down heart beat
