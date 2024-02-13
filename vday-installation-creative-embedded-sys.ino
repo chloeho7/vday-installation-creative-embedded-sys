@@ -41,7 +41,7 @@ byte green = 0;
 byte blue = 0;
 byte state = 0;
 unsigned int colour = red << 11;
-int tcount = 0;
+int tcount = 300;//1000;
 
 
 int firstlyricplace[] = {45,13,69,93,117,29,77,5,61};
@@ -75,6 +75,25 @@ const char *seclyrics[] = {
   "Isn't strange that you're not here\n with me", //21
   "Shared my body & my mind with you,\n that's all over now", //69
   "What's the worst that can happen to\n a girl who's already hurt?" //53
+};
+
+int rainbow[] = {
+
+  
+  0xD000,
+ 0xFA60, //orange?
+ 0xFF09, //yellow
+ 0x4CE0, //darker green
+ 0x04E5,//other green
+ 0x0400,//new
+  0x4EBD, // lgith blu
+  0x4D5D, //one or othdf
+  0x543F,// blye
+  0x6A9F, //..purplke
+  0x941F,
+  0x519F,
+  0xC2BF,
+  0xA27A,
 };
 
 
@@ -256,11 +275,14 @@ void loop() {
       img.setTextColor(TFT_WHITE);
 
       //could change section to just use tft
-
+      int ri = 0;
       for(size_t i = 0; i < (300-tcount)/20 && i < sizeof(seclyricplace) / sizeof(int); i++) //slowly print lyrics
       {
         img.setCursor(4,seclyricplace[i]);
+        img.setTextColor(rainbow[ri]);
         img.print(seclyrics[i]);
+        ri++;
+        
       }
 
       if (tcount <= 110){
