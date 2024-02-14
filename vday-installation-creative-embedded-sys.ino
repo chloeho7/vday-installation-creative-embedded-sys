@@ -1,15 +1,6 @@
 /*
-  An example showing rainbow colours on a 160x128 TFT LCD screen
-  and to show a basic example of font use.
-
-  This example plots the text in a sprite then pushes the sprite to the
-  TFT screen.
-  
   Make sure all the display driver and pin connections are correct by
   editing the User_Setup.h file in the TFT_eSPI library folder.
-
-  Note that yield() or delay(0) must be called in long duration for/while
-  loops to stop the ESP8266 watchdog triggering.
 
   #########################################################################
   ###### DON'T FORGET TO UPDATE THE User_Setup.h FILE IN THE LIBRARY ######
@@ -21,8 +12,6 @@
 
 #include <TFT_eSPI.h> // Graphics and font library
 #include <SPI.h>
-
-#include <stdlib.h> //for rand
 
 TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
 
@@ -86,44 +75,43 @@ int rainbow[] = {
   0x0400,//4
 };
 
-void drawPinkHeart(int x, int y,int s,int xi, int yi){
+void drawPinkHeart(int xi, int yi){
   heart.fillSprite(TFT_TRANSPARENT);
-  heart.fillCircle(80 +x, 60+y, 30, 0xFAF7);
-  heart.fillCircle(120+x, 60+y, 30, 0xFAF7);
-  heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, 0xFAF7);  
+  heart.fillCircle(80 , 60, 30, 0xFAF7);
+  heart.fillCircle(120, 60, 30, 0xFAF7);
+  heart.fillTriangle(57, 80, 100, 120, 143, 80, 0xFAF7);  
   heart.pushToSprite(&img,xi,yi,TFT_TRANSPARENT);
 }
 
 
-void drawRedHeart(int x, int y,int xi, int yi, bool big, bool broken, int thickness) {
+void drawRedHeart(int xi, bool big, bool broken, int thickness) {
   heart.fillSprite(TFT_TRANSPARENT);
   if (big){
     heart.fillCircle(75, 60, 40, TFT_RED);
     heart.fillCircle(125, 60, 40, TFT_RED);
     heart.fillTriangle(40, 80, 100, 135, 160, 80, TFT_RED);
   }else{
-    heart.fillCircle(80 +x, 60, 30, TFT_RED);
-    heart.fillCircle(120+x, 60, 30, TFT_RED);
-    heart.fillTriangle(57+x, 80+y, 100+x, 120+y, 143+x, 80+y, TFT_RED);    
+    heart.fillCircle(80 , 60, 30, TFT_RED);
+    heart.fillCircle(120, 60, 30, TFT_RED);
+    heart.fillTriangle(57, 80, 100, 120, 143, 80, TFT_RED);    
   }
   if (broken){
     for (int i = 0; i < thickness; ++i) {
-      int x = i;
-      heart.drawLine(x+107,y+30,x+85,y+60,TFT_TRANSPARENT);
-      heart.drawLine(x+105,y+85,x+85,y+60,TFT_TRANSPARENT);
-      heart.drawLine(x+105,y+85,x+95,y+120,TFT_TRANSPARENT);
+      heart.drawLine(i+107,30,i+85,60,TFT_TRANSPARENT);
+      heart.drawLine(i+105,85,i+85,60,TFT_TRANSPARENT);
+      heart.drawLine(i+105,85,i+95,120,TFT_TRANSPARENT);
     }
   }
-  heart.pushToSprite(&img,xi+10,yi-10,TFT_TRANSPARENT);
+  heart.pushToSprite(&img,xi+10,-10,TFT_TRANSPARENT);
 }
 
 void heartBeat(int pace){
- //   img.fillSprite(TFT_BLACK);
-    drawRedHeart(0,0,0,0,0,0,0);
+
+    drawRedHeart(0,0,0,0);
     img.pushSprite(0,0);
     delay(pace);
- //   img.fillSprite(TFT_BLACK);
-    drawRedHeart(0,0,0,0,1,0,0);
+
+    drawRedHeart(0,1,0,0);
     img.pushSprite(0,0);
     delay(pace);
 }
@@ -231,7 +219,7 @@ void loop() {
         colour = red << 11 | green << 5 | blue;
       }
 
-      img.setTextColor(TFT_BLACK); //CHECK IF CAN DO BORDER
+      img.setTextColor(TFT_BLACK); 
 
       for(size_t i = 0; i < (900-tcount)/20 && i < sizeof(firstlyricplace) / sizeof(int); i++) // slowly print lyrics
       {
@@ -241,7 +229,7 @@ void loop() {
 
       int x = random(-50,70);
       int y = random(-15,15);
-      drawPinkHeart(0,0,0,x,y);
+      drawPinkHeart(x,y);
 
       img.pushSprite(0, 0);
       
@@ -253,24 +241,21 @@ void loop() {
 
     if (tcount <= 0)
     { 
-      // sleep
+      
       tft.fillScreen(TFT_BLACK);
       tcount = 1000;
-      //100000
-     // esp_sleep_enable_timer_wakeup(100000);
-     // esp_deep_sleep_start();
+      // sleep
       esp_deep_sleep(100000000);
+      //turn up brightness
       ledcSetup(0, 5000, 8); // 0-15, 5000, 8
       ledcAttachPin(TFT_BL, 0); // TFT_BL, 0 - 15
       ledcWrite(0, 255); // 0-15, 0-255 (with 8 bit resolution)
 
-
-    }else{
+    } else{
 
       img.fillSprite(TFT_BLACK);
       img.setTextColor(TFT_WHITE);
 
-      //could change section to just use tft
       int ri = 0;
       for(size_t i = 0; i < (300-tcount)/20 && i < sizeof(seclyricplace) / sizeof(int); i++) //slowly print lyrics
       {
@@ -283,15 +268,9 @@ void loop() {
 
       if (tcount <= 110){
 
-        //maybe instead draw line thru heart and spereate
-   //      for(size_t i = 0; i < 110-tcount && i < 20; i++){
-          //draw lines around 0,0
-     //     drawRedHeart(0,0,0,110-tcount,0,1,i);
-
-       // }
-       // drawRedHeart(0,0,0,110-tcount,0,1,); // move heart down
-        tcount > 70 ? drawRedHeart(0,0,0,110-tcount,0,1,(110-tcount)/2) : drawRedHeart(0,0,0,110-tcount,0,1,110-90); 
-        img.pushSprite(0,0);//try del
+         // move heart down
+        tcount > 70 ? drawRedHeart(110-tcount,0,1,(110-tcount)/2) : drawRedHeart(110-tcount,0,1,110-90); 
+        img.pushSprite(0,0);
 
         //dim screen
         ledcSetup(0, 5000, 8); // 0-15, 5000, 8
