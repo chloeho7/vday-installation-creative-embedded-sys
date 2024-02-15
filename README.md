@@ -1,6 +1,6 @@
 # vday installation creative embedded sys
 
-For ESP32 TTGO display
+For TTGO T-display ESP32
 
 Uses [TFT_eSPI library](https://github.com/Bodmer/TFT_eSPI/tree/master)
  
