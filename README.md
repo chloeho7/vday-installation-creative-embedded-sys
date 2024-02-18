@@ -14,6 +14,8 @@ All printed text by Lana Del Rey
 - TTGO T-display ESP32
 - USB-C
 - Machine that supports [Arduino IDE](https://www.arduino.cc/en/software)
+- Battery
+- Power Cable included with the TTGO T-display
 
 ### IDE and libraries
 1. [Download Arduino IDE](https://www.arduino.cc/en/software)
@@ -28,8 +30,23 @@ All printed text by Lana Del Rey
 3. In the [Arduino IDE](https://www.arduino.cc/en/software) select Tools and the corresponding Port
 4. Select Upload and enjoy the display
 
-### Artistic Documentation and Installation
+### Installation
 
-Print envelope* files to display the ESP32 as shown [here](https://chloeho7.github.io/projects/vday/)
+1. Print envelope* files and fold to display the ESP32 as shown [here](https://chloeho7.github.io/projects/vday/)
+2. Put a hole in a popsicle stick and thread a string through the hole
+3. Punch a hole in the envelope
+4. Wrap the exposed metal parts of the power cord with shrink wrap such that they do not touch when connected to the battery
+5. Conncect battery wires and Power cable wires
+![pluggingin](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/6cb58860-c3bd-4030-ba6c-ed9e41de1f15)
+7. Plug into TTGO T-display
+8. Place the TTGO T-display in the envelope such that it is relatively centered as show
+![inside](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/53e16b8c-3032-4961-9a4c-b4a6ba73aa94)
+![outside](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/0fcd6381-22e7-4a7d-89ff-afe82255e675)
+9. Tape the display in place inside the envelope and tuck the battery inside
+![insidetaped](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/d9e79b8f-bfcb-46c0-bad6-b97172d48368)
+10. Tape the envelope closed and attach the string through the punched hole
+![outsidetaped](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/69c226ee-3b54-4390-bdc8-1fa66d970573)
+![string](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/f31a7576-ec8a-4850-91eb-a885ba8b453a)
+
 
 [Watch Video](https://youtu.be/NHFYFbRfrQA)
