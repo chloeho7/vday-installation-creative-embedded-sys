@@ -170,6 +170,7 @@ void loop() {
       targetTime = millis() + 100;
 
       // Colour changing state machine
+      // from Sprite_TFT_Rainbow.ino
       for (int i = 0; i < 240; i++) {
         img.drawFastVLine(i, 0, img.height(), colour);
         switch (state) {
@@ -256,8 +257,9 @@ void loop() {
       img.fillSprite(TFT_BLACK);
       img.setTextColor(TFT_WHITE);
 
+      //slowly print lyrics
       int ri = 0;
-      for(size_t i = 0; i < (300-tcount)/20 && i < sizeof(seclyricplace) / sizeof(int); i++) //slowly print lyrics
+      for(size_t i = 0; i < (300-tcount)/20 && i < sizeof(seclyricplace) / sizeof(int); i++) 
       {
         img.setCursor(4,seclyricplace[i]);
         img.setTextColor(rainbow[ri]);
