@@ -4,13 +4,9 @@ Code for TTGO T-display ESP32
 
 [Watch Video](https://youtu.be/HUqh9DVShdw?si=L3OKeGKO6dwCmb3V)
 
-Uses [TFT_eSPI library](https://github.com/Bodmer/TFT_eSPI/tree/master)
- 
-used code from: 
-- https://github.com/Bodmer/TFT_eSPI/blob/master/examples/Sprite/Transparent_Sprite_Demo/Transparent_Sprite_Demo.ino
-- https://github.com/Bodmer/TFT_eSPI/blob/master/examples/Sprite/Sprite_TFT_Rainbow/Sprite_TFT_Rainbow.ino
+Uses [TFT_eSPI library](https://github.com/Bodmer/TFT_eSPI/tree/master) and the [Sprite_TFT_Rainbow.ino](https://github.com/Bodmer/TFT_eSPI/blob/master/examples/Sprite/Sprite_TFT_Rainbow/Sprite_TFT_Rainbow.ino) example from the library where indicated by comment.
 
-All text by Lana Del Rey
+All printed text by Lana Del Rey
 
 ## How to recreate
 
