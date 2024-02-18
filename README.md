@@ -1,4 +1,5 @@
 # vday installation creative embedded sys
+![thumbnailmod1](https://github.com/chloeho7/vday-installation-creative-embedded-sys/assets/56209417/10b9e0fc-8df3-463f-b0df-afa0bcc823b0)
 
 Code for TTGO T-display ESP32
 
