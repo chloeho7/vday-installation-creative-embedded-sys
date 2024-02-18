@@ -30,6 +30,6 @@ All printed text by Lana Del Rey
 
 ### Artistic Documentation and Installation
 
-Print envelope* files to display the ESP32 as described [here](https://chloeho7.github.io/projects/vday/)
+Print envelope* files to display the ESP32 as shown [here](https://chloeho7.github.io/projects/vday/)
 
 [Watch Video](https://youtu.be/NHFYFbRfrQA)
