@@ -28,6 +28,8 @@ All printed text by Lana Del Rey
 3. In the [Arduino IDE](https://www.arduino.cc/en/software) select Tools and the corresponding Port
 4. Select Upload and enjoy the display
 
-### Artistic Documentation
+### Artistic Documentation and Installation
 
 Print envelope* files to display the ESP32 as described [here](https://chloeho7.github.io/projects/vday/)
+
+[Watch Video](https://youtu.be/NHFYFbRfrQA)
